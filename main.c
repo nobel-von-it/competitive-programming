@@ -1,41 +1,33 @@
 #include <stdio.h>
 
 #include <stdlib.h>
+#include <string.h>
 
-int *pivotArray(int *nums, int numsSize, int pivot, int *returnSize)
+char *defangIPaddr(char *address)
 {
-    int *res = malloc(sizeof(int) * numsSize);
-    *returnSize = numsSize;
+    int len = strlen(address);
+    int nlen = len + 7;
 
-    int less = 0, eq = 0;
-    for (int i = 0; i < numsSize; i++) {
-        if (nums[i] < pivot)
-            less++;
-        else if (nums[i] == pivot)
-            eq++;
+    int ir = 0;
+    char *res = malloc(sizeof(char) * nlen);
+    for (int i = 0; i < len; i++) {
+        if (address[i] == '.') {
+            res[ir++] = '[';
+            res[ir++] = '.';
+            res[ir++] = ']';
+        } else {
+            res[ir++] = address[i];
+        }
     }
 
-    int isml = 0;
-    int imid = less;
-    int ibig = less + eq;
-
-    for (int i = 0; i < numsSize; i++) {
-        if (nums[i] < pivot) res[isml++] = nums[i];
-        if (nums[i] == pivot) res[imid++] = nums[i];
-        if (nums[i] > pivot) res[ibig++] = nums[i];
-    }
+    res[nlen - 1] = '\0';
 
     return res;
 }
 
 int main(void)
 {
-    int size = 0;
-    int nums[] = {9, 12, 5, 10, 14, 3, 10};
-    int *pa = pivotArray(nums, 7, 10, &size);
-    printf("len: %d\n", size);
-    for (int i = 0; i < size; i++) {
-        printf("%d, ", pa[i]);
-    }
-    free(pa);
+    char *daddr = defangIPaddr("1.1.1.1");
+    printf("%s\n", daddr);
+    free(daddr);
 }
