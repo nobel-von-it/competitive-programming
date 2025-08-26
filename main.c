@@ -7,32 +7,23 @@ int *pivotArray(int *nums, int numsSize, int pivot, int *returnSize)
     int *res = malloc(sizeof(int) * numsSize);
     *returnSize = numsSize;
 
-    int *smls = malloc(sizeof(int) * numsSize);
-    int smls_idx = 0;
-    int *bigs = malloc(sizeof(int) * numsSize);
-    int bigs_idx = 0;
-    int *mids = malloc(sizeof(int) * numsSize);
-    int mids_idx = 0;
+    int less = 0, eq = 0;
+    for (int i = 0; i < numsSize; i++) {
+        if (nums[i] < pivot)
+            less++;
+        else if (nums[i] == pivot)
+            eq++;
+    }
+
+    int isml = 0;
+    int imid = less;
+    int ibig = less + eq;
 
     for (int i = 0; i < numsSize; i++) {
-        if (nums[i] < pivot) smls[smls_idx++] = nums[i];
-        if (nums[i] > pivot) bigs[bigs_idx++] = nums[i];
-        if (nums[i] == pivot) mids[mids_idx++] = nums[i];
+        if (nums[i] < pivot) res[isml++] = nums[i];
+        if (nums[i] == pivot) res[imid++] = nums[i];
+        if (nums[i] > pivot) res[ibig++] = nums[i];
     }
-
-    for (int i = 0; i < smls_idx; i++) {
-        res[i] = smls[i];
-    }
-    for (int i = 0; i < mids_idx; i++) {
-        res[i + smls_idx] = mids[i];
-    }
-    for (int i = 0; i < bigs_idx; i++) {
-        res[i + smls_idx + mids_idx] = bigs[i];
-    }
-
-    free(smls);
-    free(bigs);
-    free(mids);
 
     return res;
 }
