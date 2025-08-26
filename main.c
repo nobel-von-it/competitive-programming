@@ -1,36 +1,50 @@
-#include <stdlib.h>
-#include <string.h>
-
 #include <stdio.h>
 
-int abs(int a)
-{
-    if (a < 0) return -a;
-    return a;
-}
+#include <stdlib.h>
 
-int *minOperations(char *boxes, int *returnSize)
+int *pivotArray(int *nums, int numsSize, int pivot, int *returnSize)
 {
-    int len = strlen(boxes);
-    int *res = malloc(sizeof(int) * len);
-    for (int i = 0; i < len; i++) {
-        int minop = 0;
-        for (int j = 0; j < len; j++) {
-            if (boxes[j] == '1') minop += abs(i - j);
-        }
-        res[i] = minop;
+    int *res = malloc(sizeof(int) * numsSize);
+    *returnSize = numsSize;
+
+    int *smls = malloc(sizeof(int) * numsSize);
+    int smls_idx = 0;
+    int *bigs = malloc(sizeof(int) * numsSize);
+    int bigs_idx = 0;
+    int *mids = malloc(sizeof(int) * numsSize);
+    int mids_idx = 0;
+
+    for (int i = 0; i < numsSize; i++) {
+        if (nums[i] < pivot) smls[smls_idx++] = nums[i];
+        if (nums[i] > pivot) bigs[bigs_idx++] = nums[i];
+        if (nums[i] == pivot) mids[mids_idx++] = nums[i];
     }
-    *returnSize = len;
+
+    for (int i = 0; i < smls_idx; i++) {
+        res[i] = smls[i];
+    }
+    for (int i = 0; i < mids_idx; i++) {
+        res[i + smls_idx] = mids[i];
+    }
+    for (int i = 0; i < bigs_idx; i++) {
+        res[i + smls_idx + mids_idx] = bigs[i];
+    }
+
+    free(smls);
+    free(bigs);
+    free(mids);
+
     return res;
 }
 
 int main(void)
 {
     int size = 0;
-    int *minops = minOperations("110", &size);
+    int nums[] = {9, 12, 5, 10, 14, 3, 10};
+    int *pa = pivotArray(nums, 7, 10, &size);
     printf("len: %d\n", size);
     for (int i = 0; i < size; i++) {
-        printf("%d, ", minops[i]);
+        printf("%d, ", pa[i]);
     }
-    free(minops);
+    free(pa);
 }
