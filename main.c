@@ -3,31 +3,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *defangIPaddr(char *address)
+int *transformArray(int *nums, int numsSize, int *returnSize)
 {
-    int len = strlen(address);
-    int nlen = len + 7;
+    int *res = malloc(sizeof(int) * numsSize);
+    *returnSize = numsSize;
 
-    int ir = 0;
-    char *res = malloc(sizeof(char) * nlen);
-    for (int i = 0; i < len; i++) {
-        if (address[i] == '.') {
-            res[ir++] = '[';
-            res[ir++] = '.';
-            res[ir++] = ']';
-        } else {
-            res[ir++] = address[i];
-        }
+    int li = 0;
+    int ri = numsSize - 1;
+    for (int i = 0; i < numsSize; i++) {
+        if (nums[i] % 2 == 0)
+            res[li++] = 0;
+        else
+            res[ri--] = 1;
     }
-
-    res[nlen - 1] = '\0';
 
     return res;
 }
 
 int main(void)
 {
-    char *daddr = defangIPaddr("1.1.1.1");
-    printf("%s\n", daddr);
-    free(daddr);
+    int nums[] = {4, 3, 2, 1};
+    int size = 0;
+    int *res = transformArray(nums, 4, &size);
+
+    for (int i = 0; i < size; i++) {
+        printf("%d, ", res[i]);
+    }
+
+    free(res);
 }
