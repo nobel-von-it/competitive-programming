@@ -4,10 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool isStrictlyPalindromic(int n) { return false; }
-
-int main(void)
+int *recoverOrder(int *order, int orderSize, int *friends, int friendsSize, int *returnSize)
 {
-    printf("res: %d\n", isStrictlyPalindromic(4));
-    return 0;
+    int *res = malloc(sizeof(int) * friendsSize);
+    int ri = 0;
+    for (int i = 0; i < orderSize; i++) {
+        for (int j = 0; j < friendsSize; j++) {
+            if (order[i] == friends[j]) res[ri++] = order[i];
+        }
+    }
+
+    *returnSize = friendsSize;
+    return res;
 }
+
+int main(void) { return 0; }
