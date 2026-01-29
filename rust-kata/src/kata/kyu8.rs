@@ -4,7 +4,31 @@ use itertools::{Either, Itertools};
 use std::cmp::max;
 use std::cmp::Ordering;
 
-pub fn abbrev_name(name: &str) -> String {
+fn summation(n: i32) -> i32 {
+    (1..=n).sum()
+}
+fn digitize(n: u64) -> Vec<u8> {
+    n.to_string()
+        .chars()
+        .rev()
+        .map(|c| c.to_digit(10).unwrap() as u8)
+        .collect::<Vec<u8>>()
+}
+fn find_average(a: &[f64]) -> f64 {
+    if a.is_empty() {
+        0.0
+    } else {
+        a.iter().sum::<f64>() / a.len() as f64
+    }
+}
+fn invert(arr: &[i32]) -> Vec<i32> {
+    arr.iter().map(|&x| -x).collect()
+}
+
+fn abbrev_name(name: &str) -> String {
+    name.split(" ").map(|s| s[..1].to_uppercase()).join(".")
+}
+pub fn abbrev_name_old(name: &str) -> String {
     let v: Vec<&str> = name.split(' ').collect();
 
     let first = v[0].chars().next().unwrap();
@@ -359,8 +383,11 @@ pub fn next_id(ids: &[usize]) -> usize {
     }
     ids.len()
 }
-pub fn square_sum(vec: Vec<i32>) -> i32 {
+pub fn square_sum_old(vec: Vec<i32>) -> i32 {
     vec.iter().map(|x| x.pow(2)).sum()
+}
+fn square_sum(vec: Vec<i32>) -> i32 {
+    vec.iter().fold(0, |ac, x| ac + x.pow(2))
 }
 pub fn maps(values: &[i32]) -> Vec<i32> {
     values.iter().map(|x| x * 2).collect()

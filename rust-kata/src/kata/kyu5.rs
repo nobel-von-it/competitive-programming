@@ -33,6 +33,18 @@ pub fn move_zeros(arr: &[u8]) -> Vec<u8> {
         .copied()
         .collect::<Vec<u8>>()
 }
+
+fn move_zeros_old(a: &[u8]) -> Vec<u8> {
+    let mut res = a.to_owned();
+    for i in (0..a.len()).rev() {
+        if a[i] == 0 {
+            res.remove(i);
+            res.push(0);
+        }
+    }
+    res
+}
+
 #[must_use]
 pub fn move_zeros_smart(arr: &[u8]) -> Vec<u8> {
     let mut res = Vec::with_capacity(arr.len());
@@ -47,6 +59,16 @@ fn is_prime(x: u64) -> bool {
     }
     !(2..=(x as f64).sqrt() as u64).any(|n| x % n == 0)
 }
+
+fn is_prime_old(n: i64) -> bool {
+    for i in 2..((n as f64).sqrt() as i64 - 1) {
+        if n % i == 0 {
+            return false;
+        }
+    }
+    true
+}
+
 pub fn solution(n: u64, m: u64) -> Vec<u64> {
     let start = (n as f64).sqrt().sqrt().ceil() as u64;
     let end = (m as f64).sqrt().sqrt().floor() as u64;
